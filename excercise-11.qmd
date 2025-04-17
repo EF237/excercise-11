@@ -7,7 +7,7 @@ editor: visual
 
 ## Prelim
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 
 f <- "https://raw.githubusercontent.com/difiore/ada-datasets/main/Mammal_lifehistories_v2.txt"
@@ -31,12 +31,12 @@ d <- d |>
 
 Which of the variables are categorical and which are numeric?
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 skim(d)
 ```
 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 for (i in 5:13) {
   d[[i]] <- as.numeric(d[[i]])
 }
@@ -46,28 +46,28 @@ skim(d)
 
 ## Step 1
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 d2 <- d %>%
   mutate(across(where(is.numeric), ~ ifelse(. == -999, NA, .)))
 ```
 
 ## Step 2
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 d3 <- d2 |>
   select(-litter_size, -refs)
 ```
 
 ## Step 3
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 d4 <- d3 %>%
   mutate(across(where(is.numeric), log))
 ```
 
 ## Step 4
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 m_gest    <- lm(gestation_mo   ~ mass_g, data = d4, na.action = na.exclude)
 m_wean    <- lm(weaning_mo     ~ mass_g, data = d4, na.action = na.exclude)
 m_afr     <- lm(AFR_mo         ~ mass_g, data = d4, na.action = na.exclude)
@@ -88,7 +88,7 @@ d5 <- d4 %>%
 
 ## Step 5
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 ggplot(d5, aes(x = order, y = relLife)) +
   geom_boxplot() +
   labs(title = "Residual Max Lifespan by Order", x = "Order", y = "Residual Lifespan")+
@@ -97,7 +97,7 @@ ggplot(d5, aes(x = order, y = relLife)) +
 
 Which mammalian orders have the highest residual lifespan?
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 ggplot(d5, aes(x = order, y = relNewbornMass)) +
   geom_boxplot() +
   labs(title = "Residual Newborn Mass by Order", x = "Order", y = "Residual Newborn Mass") +
@@ -106,7 +106,7 @@ ggplot(d5, aes(x = order, y = relNewbornMass)) +
 
 Which mammalian orders have the have highest residual newborn mass?
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 ggplot(d5, aes(x = order, y = relWeaningMass)) +
   geom_boxplot() +
   labs(title = "Residual Weaning Mass by Order", x = "Order", y = "Residual Weaning Mass") +
@@ -117,7 +117,7 @@ Which mammalian orders have the have highest residual weaning mass?
 
 ## Step 6
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 
 ```
