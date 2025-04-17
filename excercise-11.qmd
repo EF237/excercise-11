@@ -104,7 +104,7 @@ ggplot(d5, aes(x = order, y = relLife)) +
   theme(axis.text.x = element_text(angle = 90))
 ```
 
-**Which mammalian orders have the highest residual lifespan?** Primates seem to have the highest.
+**Which mammalian orders have the highest residual lifespan?** Primates appear to have the highest values, followed by Xenarthra and Scandentia.
 
 ### Plot residuals of newborn mass (relNewbornMass) in relation to Order.
 
@@ -115,7 +115,7 @@ ggplot(d5, aes(x = order, y = relNewbornMass)) +
   theme(axis.text.x = element_text(angle = 90))
 ```
 
-**Which mammalian orders have the have highest residual newborn mass?** I'll say it's between the Cetacea and the Macroscelidea, however I'm leaning more towards the ladder.
+**Which mammalian orders have the have highest residual newborn mass?** I’d say it’s between Cetacea and Macroscelidea for the highest value, though I’m leaning more toward the latter. Aside from that, the rest are all within a similar range.
 
 ### Plot residuals of weaning mass (relWeaningMass) in relation to Order.
 
@@ -126,9 +126,11 @@ ggplot(d5, aes(x = order, y = relWeaningMass)) +
   theme(axis.text.x = element_text(angle = 90))
 ```
 
-**Which mammalian orders have the have highest residual weaning mass?** Definitely the Perissodactyla.
+**Which mammalian orders have the have highest residual weaning mass?** Perissodactyla clearly has the highest value, but Cetacea and Insectivora also show relatively high values.
 
 ## Step 6
+
+### Run models and a model selection process to evaluate what (now log transformed) variables best predict each of the two response variables, max. life(mo) and AFR(mo), from the set of the following predictors: gestation(mo), newborn(g), weaning(mo), wean mass(g), litters/year, and overall body mass(g).
 
 ```{r, message=FALSE, warning=FALSE}
 
