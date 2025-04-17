@@ -1,0 +1,88 @@
+---
+title: "excercise-11"
+author: "Joyradyn"
+format: html
+editor: visual
+---
+
+## Prelim
+
+```{r}
+library(tidyverse)
+
+f <- "https://raw.githubusercontent.com/difiore/ada-datasets/main/Mammal_lifehistories_v2.txt"
+
+d <- read_csv(f, col_names = TRUE)
+
+head(d)
+
+library(skimr)
+
+skim(d)
+colnames(d)
+
+d <- d |>
+  separate(col = 1,
+           into = c("order", "family", "Genus", "species", "mass_g", 
+                    "gestation_mo", "newborn_g", "weaning_mo", "wean_mass_g", 
+                    "AFR_mo", "max_life_mo", "litter_size", "litters_per_year", "refs"),
+           sep = "\t")
+```
+
+# Which of the variables are categorical and which are numeric?
+
+```{r}
+skim(d)
+```
+
+
+```{r}
+for (i in 5:13) {
+  d[[i]] <- as.numeric(d[[i]])
+}
+
+skim(d)
+```
+
+## Step 1
+
+```{r}
+d2 <- d %>%
+  mutate(across(where(is.numeric), ~ ifelse(. == -999, NA, .)))
+```
+
+## Step 2
+
+```{r}
+d3 <- d2 |>
+  select(-litter_size, -refs)
+```
+
+## Step 3
+
+```{r}
+d4 <- d3 %>%
+  mutate(across(where(is.numeric), log))
+```
+
+## Step 4
+
+```{r}
+
+
+
+```
+
+## Step 5
+
+```{r}
+
+
+```
+
+## Step 6
+
+```{r}
+
+
+```
