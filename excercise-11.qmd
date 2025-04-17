@@ -29,7 +29,7 @@ d <- d |>
            sep = "\t")
 ```
 
-# Which of the variables are categorical and which are numeric?
+Which of the variables are categorical and which are numeric?
 
 ```{r}
 skim(d)
@@ -68,17 +68,52 @@ d4 <- d3 %>%
 ## Step 4
 
 ```{r}
+m_gest    <- lm(gestation_mo   ~ mass_g, data = d4, na.action = na.exclude)
+m_wean    <- lm(weaning_mo     ~ mass_g, data = d4, na.action = na.exclude)
+m_afr     <- lm(AFR_mo         ~ mass_g, data = d4, na.action = na.exclude)
+m_life    <- lm(max_life_mo    ~ mass_g, data = d4, na.action = na.exclude)
+m_newborn <- lm(newborn_g      ~ mass_g, data = d4, na.action = na.exclude)
+m_weanmass<- lm(wean_mass_g    ~ mass_g, data = d4, na.action = na.exclude)
 
-
-
+d5 <- d4 %>%
+  mutate(
+    relGest         = residuals(m_gest),
+    relWean         = residuals(m_wean),
+    relAFR          = residuals(m_afr),
+    relLife         = residuals(m_life),
+    relNewbornMass  = residuals(m_newborn),
+    relWeaningMass  = residuals(m_weanmass)
+  )
 ```
 
 ## Step 5
 
 ```{r}
-
-
+ggplot(d5, aes(x = order, y = relLife)) +
+  geom_boxplot() +
+  labs(title = "Residual Max Lifespan by Order", x = "Order", y = "Residual Lifespan")+
+  theme(axis.text.x = element_text(angle = 90))
 ```
+
+Which mammalian orders have the highest residual lifespan?
+
+```{r}
+ggplot(d5, aes(x = order, y = relNewbornMass)) +
+  geom_boxplot() +
+  labs(title = "Residual Newborn Mass by Order", x = "Order", y = "Residual Newborn Mass") +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+Which mammalian orders have the have highest residual newborn mass?
+
+```{r}
+ggplot(d5, aes(x = order, y = relWeaningMass)) +
+  geom_boxplot() +
+  labs(title = "Residual Weaning Mass by Order", x = "Order", y = "Residual Weaning Mass") +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+Which mammalian orders have the have highest residual weaning mass?
 
 ## Step 6
 
@@ -86,3 +121,10 @@ d4 <- d3 %>%
 
 
 ```
+
+
+For each of the two response variables, indicate what is the best model overall based on AICc and how many models have a delta AICc of 4 or less?
+
+What variables, if any, appear in all of this set of “top” models?
+
+Calculate and plot the model-averaged coefficients and their CIs across this set of top models.
