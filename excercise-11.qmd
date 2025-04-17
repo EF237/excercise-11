@@ -5,7 +5,7 @@ format: html
 editor: visual
 ---
 
-## Prelim
+## Loading Dataset
 
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -14,37 +14,38 @@ f <- "https://raw.githubusercontent.com/difiore/ada-datasets/main/Mammal_lifehis
 
 d <- read_csv(f, col_names = TRUE)
 
-head(d)
+head(d) # Quick peek at loaded dataset
 
 library(skimr)
 
-skim(d)
-colnames(d)
+skim(d) # Deep analysis at loaded dataset
+colnames(d) # Review column situation
 
+# Seperate data into columns
 d <- d |>
   separate(col = 1,
            into = c("order", "family", "Genus", "species", "mass_g", 
                     "gestation_mo", "newborn_g", "weaning_mo", "wean_mass_g", 
                     "AFR_mo", "max_life_mo", "litter_size", "litters_per_year", "refs"),
            sep = "\t")
-```
 
-Which of the variables are categorical and which are numeric?
+skim(d) # Review post separated dataset
 
-```{r, message=FALSE, warning=FALSE}
-skim(d)
-```
-
-
-```{r, message=FALSE, warning=FALSE}
+# Change characters in dataset to numeric
 for (i in 5:13) {
   d[[i]] <- as.numeric(d[[i]])
 }
 
-skim(d)
+skim(d) # Review final changes
 ```
 
+**Which of the variables are categorical and which are numeric?**
+
+The original dataset was loaded as a single string containing mixed information. I had to split the string into separate columns, and after that, all variables were initially treated as characters. After converting the dataset to numeric values, due to the presence of possible numerical data, I ended up with 5 variables being treated as characters and 9 as numerics, which is reflected in the final skim.
+
 ## Step 1
+
+### Replace all values of -999 (the authors’ code for missing data) with NA.
 
 ```{r, message=FALSE, warning=FALSE}
 d2 <- d %>%
@@ -53,6 +54,8 @@ d2 <- d %>%
 
 ## Step 2
 
+### Drop the variables litter size and refs.
+
 ```{r, message=FALSE, warning=FALSE}
 d3 <- d2 |>
   select(-litter_size, -refs)
@@ -60,12 +63,16 @@ d3 <- d2 |>
 
 ## Step 3
 
+### Log transform all of the other numeric variables.
+
 ```{r, message=FALSE, warning=FALSE}
 d4 <- d3 %>%
   mutate(across(where(is.numeric), log))
 ```
 
 ## Step 4
+
+Regress the (now log transformed) age \[gestation(mo), weaning(mo), AFR(mo) (i.e., age at first reproduction), and max. life(mo) (i.e., maximum lifespan)\] and mass \[newborn(g) and wean mass(g)\] variables on (now log transformed) overall body mass(g) and add the residuals to the dataframe as new variables \[relGest, relWean, relAFR, relLife, relNewbornMass, and relWeaningMass\].
 
 ```{r, message=FALSE, warning=FALSE}
 m_gest    <- lm(gestation_mo   ~ mass_g, data = d4, na.action = na.exclude)
@@ -88,6 +95,8 @@ d5 <- d4 %>%
 
 ## Step 5
 
+### Plot residuals of max lifespan (relLife) in relation to Order.
+
 ```{r, message=FALSE, warning=FALSE}
 ggplot(d5, aes(x = order, y = relLife)) +
   geom_boxplot() +
@@ -95,7 +104,9 @@ ggplot(d5, aes(x = order, y = relLife)) +
   theme(axis.text.x = element_text(angle = 90))
 ```
 
-Which mammalian orders have the highest residual lifespan?
+**Which mammalian orders have the highest residual lifespan?** Primates seem to have the highest.
+
+### Plot residuals of newborn mass (relNewbornMass) in relation to Order.
 
 ```{r, message=FALSE, warning=FALSE}
 ggplot(d5, aes(x = order, y = relNewbornMass)) +
@@ -104,7 +115,9 @@ ggplot(d5, aes(x = order, y = relNewbornMass)) +
   theme(axis.text.x = element_text(angle = 90))
 ```
 
-Which mammalian orders have the have highest residual newborn mass?
+**Which mammalian orders have the have highest residual newborn mass?** I'll say it's between the Cetacea and the Macroscelidea, however I'm leaning more towards the ladder.
+
+### Plot residuals of weaning mass (relWeaningMass) in relation to Order.
 
 ```{r, message=FALSE, warning=FALSE}
 ggplot(d5, aes(x = order, y = relWeaningMass)) +
@@ -113,7 +126,7 @@ ggplot(d5, aes(x = order, y = relWeaningMass)) +
   theme(axis.text.x = element_text(angle = 90))
 ```
 
-Which mammalian orders have the have highest residual weaning mass?
+**Which mammalian orders have the have highest residual weaning mass?** Definitely the Perissodactyla.
 
 ## Step 6
 
@@ -122,9 +135,8 @@ Which mammalian orders have the have highest residual weaning mass?
 
 ```
 
+**For each of the two response variables, indicate what is the best model overall based on AICc and how many models have a delta AICc of 4 or less?**
 
-For each of the two response variables, indicate what is the best model overall based on AICc and how many models have a delta AICc of 4 or less?
+**What variables, if any, appear in all of this set of “top” models?**
 
-What variables, if any, appear in all of this set of “top” models?
-
-Calculate and plot the model-averaged coefficients and their CIs across this set of top models.
+**Calculate and plot the model-averaged coefficients and their CIs across this set of top models.**
