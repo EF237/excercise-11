@@ -130,21 +130,98 @@ ggplot(d5, aes(x = order, y = relWeaningMass)) +
 
 ## Step 6
 
-### Run models and a model selection process to evaluate what (now log transformed) variables best predict each of the two response variables, max. life(mo) and AFR(mo), from the set of the following predictors: gestation(mo), newborn(g), weaning(mo), wean mass(g), litters/year, and overall body mass(g).
+### Run models and a model selection process to evaluate what (now log transformed) variables best predict each of the two response variables, max. life(mo) and AFR(mo), from the set of the following predictors: gestation(mo), newborn(g), weaning(mo), wean mass(g), litters/year, and overall body mass(g). Then calculate and plot the model-averaged coefficients and their CIs across this set of top models.
 
 ```{r, message=FALSE, warning=FALSE}
-m2_life    <- lm(max_life_mo ~ gestation_mo + newborn_g + weaning_mo + wean_mass_g + litters_per_year + mass_g, data = d4, na.action = na.exclude)
+library(AICcmodavg)
+library(MASS)
 
-summary(m2_life)
+# Max Life
+d6 <- drop_na(d5)
 
-m2_afr    <- lm(AFR_mo ~ gestation_mo + newborn_g + weaning_mo + wean_mass_g + litters_per_year + mass_g, data = d4, na.action = na.exclude)
+mLIFE <- lm(max_life_mo ~ gestation_mo + newborn_g + weaning_mo + wean_mass_g + litters_per_year + mass_g, data = d6, na.action = na.exclude)
 
-summary(m2_afr)
+(sLIFE <- stepAIC(mLIFE, scope = . ~ ., direction = "both"))
+
+summary(sLIFE)
+
+mLIFE_gestation_mo     <- lm(max_life_mo ~ gestation_mo, data = d6, na.action = na.exclude)
+mLIFE_newborn_g        <- lm(max_life_mo ~ newborn_g, data = d6, na.action = na.exclude)
+mLIFE_weaning_mo       <- lm(max_life_mo ~ weaning_mo, data = d6, na.action = na.exclude)
+mLIFE_wean_mass_g      <- lm(max_life_mo ~ wean_mass_g, data = d6, na.action = na.exclude)
+mLIFE_litters_per_year <- lm(max_life_mo ~ litters_per_year, data = d6, na.action = na.exclude)
+mLIFE_mass_g           <- lm(max_life_mo ~ mass_g, data = d6, na.action = na.exclude)
+
+# AFR
+d6 <- drop_na(d5)
+
+mAFR <- lm(AFR_mo ~ gestation_mo + newborn_g + weaning_mo + wean_mass_g + litters_per_year + mass_g, data = d6, na.action = na.exclude)
+
+(sAFR <- stepAIC(mAFR, scope = . ~ ., direction = "both"))
+
+summary(sAFR)
+
+mAFR_gestation_mo     <- lm(AFR_mo ~ gestation_mo, data = d6, na.action = na.exclude)
+mAFR_newborn_g        <- lm(AFR_mo ~ newborn_g, data = d6, na.action = na.exclude)
+mAFR_weaning_mo       <- lm(AFR_mo ~ weaning_mo, data = d6, na.action = na.exclude)
+mAFR_wean_mass_g      <- lm(AFR_mo ~ wean_mass_g, data = d6, na.action = na.exclude)
+mAFR_litters_per_year <- lm(AFR_mo ~ litters_per_year, data = d6, na.action = na.exclude)
+mAFR_mass_g           <- lm(AFR_mo ~ mass_g, data = d, na.action = na.exclude)
 ```
 
-**For each of the two response variables, indicate what is the best model overall based on AICc and how many models have a delta AICc of 4 or less?**
+**For each of the two response variables, indicate what is the best model overall based on AICc and how many models have a delta AICc of 4 or less?** For the life variable, the relevant predictor is gestation_mo; for the AFR variable, it is litters_per_year.
+
+```{r, message=FALSE, warning=FALSE}
+# Life
+aictab(list(mLIFE_gestation_mo, mLIFE_newborn_g, mLIFE_weaning_mo, mLIFE_wean_mass_g, mLIFE_litters_per_year, mLIFE_mass_g), c( "mLIFE_gestation_mo", "mLIFE_newborn_g", "mLIFE_weaning_mo", "mLIFE_wean_mass_g", "mLIFE_litters_per_year", "mLIFE_mass_g"))
+
+# AFR
+aictab(list(mAFR_gestation_mo, mAFR_newborn_g, mAFR_weaning_mo, mAFR_wean_mass_g, mAFR_litters_per_year, mAFR_mass_g), c("mAFR_gestation_mo", "mAFR_newborn_g", "mAFR_weaning_mo", "mAFR_wean_mass_g", "mAFR_litters_per_year", "mAFR_mass_g"))
+
+library(MuMIn)
+
+m2LIFE <- lm(max_life_mo ~ gestation_mo + newborn_g + weaning_mo + wean_mass_g + litters_per_year + mass_g, data = d6, na.action = "na.fail")
+
+mods <- dredge(m2LIFE, beta = "none", m.lim = c(0,4))
+
+class(mods)
+
+(mods.list <- get.models(mods, subset = TRUE))
+
+(mods.avg <- summary(model.avg(mods, subset = delta < 4, fit = TRUE)))
+
+confint(mods.avg)
+
+(mods.avg <- summary(model.avg(mods, subset = cumsum(weight) <= 0.95, fit = TRUE)))
+
+confint(mods.avg)
+
+plot(mods.avg, full = TRUE, intercept = FALSE,  main = "Model-Averaged Coefficients for Life Models")
+
+```
+
+```{r}
+m2AFR <- lm(AFR_mo ~ gestation_mo + newborn_g + weaning_mo + wean_mass_g + litters_per_year + mass_g, data = d6, na.action = "na.fail")
+
+mods <- dredge(m2AFR, beta = "none", m.lim = c(0,4))
+
+class(mods)
+
+(mods.list <- get.models(mods, subset = TRUE))
+
+(mods.avg <- summary(model.avg(mods, subset = delta < 4, fit = TRUE)))
+
+confint(mods.avg)
+
+(mods.avg <- summary(model.avg(mods, subset = cumsum(weight) <= 0.95, fit = TRUE)))
+
+confint(mods.avg)
+
+plot(mods.avg, full = TRUE, intercept = FALSE, main = "Model-Averaged Coefficients for APR Models")
+
+```
+**What variables, if any, appear in all of this set of “top” models?**Across variables the "top" models include both gestation_mo and litters_per_year.
 
 
-**What variables, if any, appear in all of this set of “top” models?**
 
-**Calculate and plot the model-averaged coefficients and their CIs across this set of top models.**
+
