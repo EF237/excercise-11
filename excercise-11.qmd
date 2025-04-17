@@ -152,6 +152,10 @@ mLIFE_wean_mass_g      <- lm(max_life_mo ~ wean_mass_g, data = d6, na.action = n
 mLIFE_litters_per_year <- lm(max_life_mo ~ litters_per_year, data = d6, na.action = na.exclude)
 mLIFE_mass_g           <- lm(max_life_mo ~ mass_g, data = d6, na.action = na.exclude)
 
+# Life
+aictab(list(mLIFE_gestation_mo, mLIFE_newborn_g, mLIFE_weaning_mo, mLIFE_wean_mass_g, mLIFE_litters_per_year, mLIFE_mass_g), c( "mLIFE_gestation_mo", "mLIFE_newborn_g", "mLIFE_weaning_mo", "mLIFE_wean_mass_g", "mLIFE_litters_per_year", "mLIFE_mass_g"))
+
+
 # AFR
 d6 <- drop_na(d5)
 
@@ -167,18 +171,17 @@ mAFR_weaning_mo       <- lm(AFR_mo ~ weaning_mo, data = d6, na.action = na.exclu
 mAFR_wean_mass_g      <- lm(AFR_mo ~ wean_mass_g, data = d6, na.action = na.exclude)
 mAFR_litters_per_year <- lm(AFR_mo ~ litters_per_year, data = d6, na.action = na.exclude)
 mAFR_mass_g           <- lm(AFR_mo ~ mass_g, data = d, na.action = na.exclude)
+
+# AFR
+aictab(list(mAFR_gestation_mo, mAFR_newborn_g, mAFR_weaning_mo, mAFR_wean_mass_g, mAFR_litters_per_year, mAFR_mass_g), c("mAFR_gestation_mo", "mAFR_newborn_g", "mAFR_weaning_mo", "mAFR_wean_mass_g", "mAFR_litters_per_year", "mAFR_mass_g"))
 ```
 
 **For each of the two response variables, indicate what is the best model overall based on AICc and how many models have a delta AICc of 4 or less?** For the life variable, the relevant predictor is gestation_mo; for the AFR variable, it is litters_per_year.
 
 ```{r, message=FALSE, warning=FALSE}
-# Life
-aictab(list(mLIFE_gestation_mo, mLIFE_newborn_g, mLIFE_weaning_mo, mLIFE_wean_mass_g, mLIFE_litters_per_year, mLIFE_mass_g), c( "mLIFE_gestation_mo", "mLIFE_newborn_g", "mLIFE_weaning_mo", "mLIFE_wean_mass_g", "mLIFE_litters_per_year", "mLIFE_mass_g"))
-
-# AFR
-aictab(list(mAFR_gestation_mo, mAFR_newborn_g, mAFR_weaning_mo, mAFR_wean_mass_g, mAFR_litters_per_year, mAFR_mass_g), c("mAFR_gestation_mo", "mAFR_newborn_g", "mAFR_weaning_mo", "mAFR_wean_mass_g", "mAFR_litters_per_year", "mAFR_mass_g"))
-
 library(MuMIn)
+
+# Use MuMIn package for Life varible
 
 m2LIFE <- lm(max_life_mo ~ gestation_mo + newborn_g + weaning_mo + wean_mass_g + litters_per_year + mass_g, data = d6, na.action = "na.fail")
 
@@ -198,9 +201,8 @@ confint(mods.avg)
 
 plot(mods.avg, full = TRUE, intercept = FALSE,  main = "Model-Averaged Coefficients for Life Models")
 
-```
+# Now do the same thing for APR variable
 
-```{r}
 m2AFR <- lm(AFR_mo ~ gestation_mo + newborn_g + weaning_mo + wean_mass_g + litters_per_year + mass_g, data = d6, na.action = "na.fail")
 
 mods <- dredge(m2AFR, beta = "none", m.lim = c(0,4))
@@ -220,8 +222,5 @@ confint(mods.avg)
 plot(mods.avg, full = TRUE, intercept = FALSE, main = "Model-Averaged Coefficients for APR Models")
 
 ```
-**What variables, if any, appear in all of this set of “top” models?**Across variables the "top" models include both gestation_mo and litters_per_year.
 
-
-
-
+**What variables, if any, appear in all of this set of “top” models?** The top-ranked models commonly include the variables: `gestation_mo`, `litters_per_year`, and `mass_g`.

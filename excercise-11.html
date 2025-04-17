@@ -908,12 +908,26 @@ F-statistic: 165.9 on 4 and 201 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>mLIFE_litters_per_year <span class="ot">&lt;-</span> <span class="fu">lm</span>(max_life_mo <span class="sc">~</span> litters_per_year, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>mLIFE_mass_g           <span class="ot">&lt;-</span> <span class="fu">lm</span>(max_life_mo <span class="sc">~</span> mass_g, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># AFR</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>d6 <span class="ot">&lt;-</span> <span class="fu">drop_na</span>(d5)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>mAFR <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> gestation_mo <span class="sc">+</span> newborn_g <span class="sc">+</span> weaning_mo <span class="sc">+</span> wean_mass_g <span class="sc">+</span> litters_per_year <span class="sc">+</span> mass_g, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>(sAFR <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(mAFR, <span class="at">scope =</span> . <span class="sc">~</span> ., <span class="at">direction =</span> <span class="st">"both"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Life</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="fu">aictab</span>(<span class="fu">list</span>(mLIFE_gestation_mo, mLIFE_newborn_g, mLIFE_weaning_mo, mLIFE_wean_mass_g, mLIFE_litters_per_year, mLIFE_mass_g), <span class="fu">c</span>( <span class="st">"mLIFE_gestation_mo"</span>, <span class="st">"mLIFE_newborn_g"</span>, <span class="st">"mLIFE_weaning_mo"</span>, <span class="st">"mLIFE_wean_mass_g"</span>, <span class="st">"mLIFE_litters_per_year"</span>, <span class="st">"mLIFE_mass_g"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Model selection based on AICc:
+
+                       K   AICc Delta_AICc AICcWt Cum.Wt      LL
+mLIFE_gestation_mo     3 313.32       0.00      1      1 -153.60
+mLIFE_wean_mass_g      3 330.97      17.65      0      1 -162.43
+mLIFE_mass_g           3 337.35      24.03      0      1 -165.61
+mLIFE_newborn_g        3 345.25      31.93      0      1 -169.56
+mLIFE_litters_per_year 3 380.57      67.26      0      1 -187.23
+mLIFE_weaning_mo       3 383.92      70.61      0      1 -188.90</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># AFR</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>d6 <span class="ot">&lt;-</span> <span class="fu">drop_na</span>(d5)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>mAFR <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> gestation_mo <span class="sc">+</span> newborn_g <span class="sc">+</span> weaning_mo <span class="sc">+</span> wean_mass_g <span class="sc">+</span> litters_per_year <span class="sc">+</span> mass_g, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>(sAFR <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(mAFR, <span class="at">scope =</span> . <span class="sc">~</span> ., <span class="at">direction =</span> <span class="st">"both"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Start:  AIC=-261.8
 AFR_mo ~ gestation_mo + newborn_g + weaning_mo + wean_mass_g + 
@@ -965,7 +979,7 @@ Coefficients:
           mass_g  
          0.03619  </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sAFR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sAFR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -990,31 +1004,15 @@ Residual standard error: 0.5183 on 201 degrees of freedom
 Multiple R-squared:  0.8072,    Adjusted R-squared:  0.8034 
 F-statistic: 210.4 on 4 and 201 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>mAFR_gestation_mo     <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> gestation_mo, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>mAFR_newborn_g        <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> newborn_g, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>mAFR_weaning_mo       <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> weaning_mo, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>mAFR_wean_mass_g      <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> wean_mass_g, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>mAFR_litters_per_year <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> litters_per_year, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>mAFR_mass_g           <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> mass_g, <span class="at">data =</span> d, <span class="at">na.action =</span> na.exclude)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><strong>For each of the two response variables, indicate what is the best model overall based on AICc and how many models have a delta AICc of 4 or less?</strong> For the life variable, the relevant predictor is gestation_mo; for the AFR variable, it is litters_per_year.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Life</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">aictab</span>(<span class="fu">list</span>(mLIFE_gestation_mo, mLIFE_newborn_g, mLIFE_weaning_mo, mLIFE_wean_mass_g, mLIFE_litters_per_year, mLIFE_mass_g), <span class="fu">c</span>( <span class="st">"mLIFE_gestation_mo"</span>, <span class="st">"mLIFE_newborn_g"</span>, <span class="st">"mLIFE_weaning_mo"</span>, <span class="st">"mLIFE_wean_mass_g"</span>, <span class="st">"mLIFE_litters_per_year"</span>, <span class="st">"mLIFE_mass_g"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Model selection based on AICc:
-
-                       K   AICc Delta_AICc AICcWt Cum.Wt      LL
-mLIFE_gestation_mo     3 313.32       0.00      1      1 -153.60
-mLIFE_wean_mass_g      3 330.97      17.65      0      1 -162.43
-mLIFE_mass_g           3 337.35      24.03      0      1 -165.61
-mLIFE_newborn_g        3 345.25      31.93      0      1 -169.56
-mLIFE_litters_per_year 3 380.57      67.26      0      1 -187.23
-mLIFE_weaning_mo       3 383.92      70.61      0      1 -188.90</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># AFR</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">aictab</span>(<span class="fu">list</span>(mAFR_gestation_mo, mAFR_newborn_g, mAFR_weaning_mo, mAFR_wean_mass_g, mAFR_litters_per_year, mAFR_mass_g), <span class="fu">c</span>(<span class="st">"mAFR_gestation_mo"</span>, <span class="st">"mAFR_newborn_g"</span>, <span class="st">"mAFR_weaning_mo"</span>, <span class="st">"mAFR_wean_mass_g"</span>, <span class="st">"mAFR_litters_per_year"</span>, <span class="st">"mAFR_mass_g"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>mAFR_gestation_mo     <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> gestation_mo, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>mAFR_newborn_g        <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> newborn_g, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>mAFR_weaning_mo       <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> weaning_mo, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>mAFR_wean_mass_g      <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> wean_mass_g, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>mAFR_litters_per_year <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> litters_per_year, <span class="at">data =</span> d6, <span class="at">na.action =</span> na.exclude)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>mAFR_mass_g           <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> mass_g, <span class="at">data =</span> d, <span class="at">na.action =</span> na.exclude)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co"># AFR</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="fu">aictab</span>(<span class="fu">list</span>(mAFR_gestation_mo, mAFR_newborn_g, mAFR_weaning_mo, mAFR_wean_mass_g, mAFR_litters_per_year, mAFR_mass_g), <span class="fu">c</span>(<span class="st">"mAFR_gestation_mo"</span>, <span class="st">"mAFR_newborn_g"</span>, <span class="st">"mAFR_weaning_mo"</span>, <span class="st">"mAFR_wean_mass_g"</span>, <span class="st">"mAFR_litters_per_year"</span>, <span class="st">"mAFR_mass_g"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Model selection based on AICc:
@@ -1027,17 +1025,22 @@ mAFR_wean_mass_g      3   464.48      53.83      0      1   -229.18
 mAFR_newborn_g        3   476.23      65.59      0      1   -235.06
 mAFR_mass_g           3 22010.92   21600.27      0      1 -11002.45</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MuMIn)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>m2LIFE <span class="ot">&lt;-</span> <span class="fu">lm</span>(max_life_mo <span class="sc">~</span> gestation_mo <span class="sc">+</span> newborn_g <span class="sc">+</span> weaning_mo <span class="sc">+</span> wean_mass_g <span class="sc">+</span> litters_per_year <span class="sc">+</span> mass_g, <span class="at">data =</span> d6, <span class="at">na.action =</span> <span class="st">"na.fail"</span>)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>mods <span class="ot">&lt;-</span> <span class="fu">dredge</span>(m2LIFE, <span class="at">beta =</span> <span class="st">"none"</span>, <span class="at">m.lim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">4</span>))</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(mods)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>For each of the two response variables, indicate what is the best model overall based on AICc and how many models have a delta AICc of 4 or less?</strong> For the life variable, the relevant predictor is gestation_mo; for the AFR variable, it is litters_per_year.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MuMIn)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use MuMIn package for Life varible</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>m2LIFE <span class="ot">&lt;-</span> <span class="fu">lm</span>(max_life_mo <span class="sc">~</span> gestation_mo <span class="sc">+</span> newborn_g <span class="sc">+</span> weaning_mo <span class="sc">+</span> wean_mass_g <span class="sc">+</span> litters_per_year <span class="sc">+</span> mass_g, <span class="at">data =</span> d6, <span class="at">na.action =</span> <span class="st">"na.fail"</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>mods <span class="ot">&lt;-</span> <span class="fu">dredge</span>(m2LIFE, <span class="at">beta =</span> <span class="st">"none"</span>, <span class="at">m.lim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">4</span>))</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(mods)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "model.selection" "data.frame"     </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>(mods.list <span class="ot">&lt;-</span> <span class="fu">get.models</span>(mods, <span class="at">subset =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>(mods.list <span class="ot">&lt;-</span> <span class="fu">get.models</span>(mods, <span class="at">subset =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$`40`
 
@@ -1682,7 +1685,7 @@ Coefficients:
 attr(,"rank")
 function (x) 
 do.call("rank", list(x))
-&lt;environment: 0x12d2fc410&gt;
+&lt;environment: 0x14a2f3dd0&gt;
 attr(,"call")
 AICc(x)
 attr(,"class")
@@ -1690,7 +1693,7 @@ attr(,"class")
 attr(,"beta")
 [1] "none"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>(mods.avg <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">model.avg</span>(mods, <span class="at">subset =</span> delta <span class="sc">&lt;</span> <span class="dv">4</span>, <span class="at">fit =</span> <span class="cn">TRUE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>(mods.avg <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">model.avg</span>(mods, <span class="at">subset =</span> delta <span class="sc">&lt;</span> <span class="dv">4</span>, <span class="at">fit =</span> <span class="cn">TRUE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1733,7 +1736,7 @@ wean_mass_g       0.08586    0.02161     0.02174   3.949 7.83e-05 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(mods.avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(mods.avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                       2.5 %     97.5 %
 (Intercept)       3.78304344  4.3206545
@@ -1743,7 +1746,7 @@ mass_g            0.04486373  0.1196587
 weaning_mo        0.03744025  0.2432151
 wean_mass_g       0.04324855  0.1284642</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>(mods.avg <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">model.avg</span>(mods, <span class="at">subset =</span> <span class="fu">cumsum</span>(weight) <span class="sc">&lt;=</span> <span class="fl">0.95</span>, <span class="at">fit =</span> <span class="cn">TRUE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>(mods.avg <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">model.avg</span>(mods, <span class="at">subset =</span> <span class="fu">cumsum</span>(weight) <span class="sc">&lt;=</span> <span class="fl">0.95</span>, <span class="at">fit =</span> <span class="cn">TRUE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1792,7 +1795,7 @@ newborn_g        -0.04540    0.08212     0.08228   0.552 0.581133
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(mods.avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(mods.avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                         2.5 %     97.5 %
 (Intercept)       3.7715888856  4.3495821
@@ -1803,7 +1806,7 @@ weaning_mo        0.0374759650  0.2434290
 wean_mass_g      -0.0004518019  0.1544567
 newborn_g        -0.2066607886  0.1158686</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mods.avg, <span class="at">full =</span> <span class="cn">TRUE</span>, <span class="at">intercept =</span> <span class="cn">FALSE</span>,  <span class="at">main =</span> <span class="st">"Model-Averaged Coefficients for Life Models"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mods.avg, <span class="at">full =</span> <span class="cn">TRUE</span>, <span class="at">intercept =</span> <span class="cn">FALSE</span>,  <span class="at">main =</span> <span class="st">"Model-Averaged Coefficients for Life Models"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1811,19 +1814,17 @@ newborn_g        -0.2066607886  0.1158686</code></pre>
 </figure>
 </div>
 </div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>m2AFR <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> gestation_mo <span class="sc">+</span> newborn_g <span class="sc">+</span> weaning_mo <span class="sc">+</span> wean_mass_g <span class="sc">+</span> litters_per_year <span class="sc">+</span> mass_g, <span class="at">data =</span> d6, <span class="at">na.action =</span> <span class="st">"na.fail"</span>)</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>mods <span class="ot">&lt;-</span> <span class="fu">dredge</span>(m2AFR, <span class="at">beta =</span> <span class="st">"none"</span>, <span class="at">m.lim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Fixed term is "(Intercept)"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(mods)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now do the same thing for APR variable</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>m2AFR <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> gestation_mo <span class="sc">+</span> newborn_g <span class="sc">+</span> weaning_mo <span class="sc">+</span> wean_mass_g <span class="sc">+</span> litters_per_year <span class="sc">+</span> mass_g, <span class="at">data =</span> d6, <span class="at">na.action =</span> <span class="st">"na.fail"</span>)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>mods <span class="ot">&lt;-</span> <span class="fu">dredge</span>(m2AFR, <span class="at">beta =</span> <span class="st">"none"</span>, <span class="at">m.lim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">4</span>))</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(mods)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "model.selection" "data.frame"     </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>(mods.list <span class="ot">&lt;-</span> <span class="fu">get.models</span>(mods, <span class="at">subset =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>(mods.list <span class="ot">&lt;-</span> <span class="fu">get.models</span>(mods, <span class="at">subset =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$`40`
 
@@ -2464,7 +2465,7 @@ Coefficients:
 attr(,"rank")
 function (x) 
 do.call("rank", list(x))
-&lt;environment: 0x10f361d50&gt;
+&lt;environment: 0x13e3eacf0&gt;
 attr(,"call")
 AICc(x)
 attr(,"class")
@@ -2472,7 +2473,7 @@ attr(,"class")
 attr(,"beta")
 [1] "none"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>(mods.avg <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">model.avg</span>(mods, <span class="at">subset =</span> delta <span class="sc">&lt;</span> <span class="dv">4</span>, <span class="at">fit =</span> <span class="cn">TRUE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>(mods.avg <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">model.avg</span>(mods, <span class="at">subset =</span> delta <span class="sc">&lt;</span> <span class="dv">4</span>, <span class="at">fit =</span> <span class="cn">TRUE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -2521,7 +2522,7 @@ newborn_g         0.03957    0.02746     0.02763   1.432   0.1520
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(mods.avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(mods.avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                        2.5 %      97.5 %
 (Intercept)       1.772090289  2.38260614
@@ -2532,7 +2533,7 @@ weaning_mo        0.019474192  0.26213558
 wean_mass_g      -0.012989579  0.08706876
 newborn_g        -0.014572450  0.09371854</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>(mods.avg <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">model.avg</span>(mods, <span class="at">subset =</span> <span class="fu">cumsum</span>(weight) <span class="sc">&lt;=</span> <span class="fl">0.95</span>, <span class="at">fit =</span> <span class="cn">TRUE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>(mods.avg <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">model.avg</span>(mods, <span class="at">subset =</span> <span class="fu">cumsum</span>(weight) <span class="sc">&lt;=</span> <span class="fl">0.95</span>, <span class="at">fit =</span> <span class="cn">TRUE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -2581,7 +2582,7 @@ newborn_g         0.03957    0.02746     0.02763   1.432   0.1520
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(mods.avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(mods.avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                        2.5 %      97.5 %
 (Intercept)       1.772090289  2.38260614
@@ -2592,16 +2593,16 @@ weaning_mo        0.019474192  0.26213558
 wean_mass_g      -0.012989579  0.08706876
 newborn_g        -0.014572450  0.09371854</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mods.avg, <span class="at">full =</span> <span class="cn">TRUE</span>, <span class="at">intercept =</span> <span class="cn">FALSE</span>, <span class="at">main =</span> <span class="st">"Model-Averaged Coefficients for APR Models"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mods.avg, <span class="at">full =</span> <span class="cn">TRUE</span>, <span class="at">intercept =</span> <span class="cn">FALSE</span>, <span class="at">main =</span> <span class="st">"Model-Averaged Coefficients for APR Models"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="excercise-11_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="excercise-11_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p><strong>What variables, if any, appear in all of this set of “top” models?</strong>Across variables the “top” models include both gestation_mo and litters_per_year.</p>
+<p><strong>What variables, if any, appear in all of this set of “top” models?</strong> The top-ranked models commonly include the variables: <code>gestation_mo</code>, <code>litters_per_year</code>, and <code>mass_g</code>.</p>
 </section>
 </section>
 
