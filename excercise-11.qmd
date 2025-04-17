@@ -133,11 +133,17 @@ ggplot(d5, aes(x = order, y = relWeaningMass)) +
 ### Run models and a model selection process to evaluate what (now log transformed) variables best predict each of the two response variables, max. life(mo) and AFR(mo), from the set of the following predictors: gestation(mo), newborn(g), weaning(mo), wean mass(g), litters/year, and overall body mass(g).
 
 ```{r, message=FALSE, warning=FALSE}
+m2_life    <- lm(max_life_mo ~ gestation_mo + newborn_g + weaning_mo + wean_mass_g + litters_per_year + mass_g, data = d4, na.action = na.exclude)
 
+summary(m2_life)
 
+m2_afr    <- lm(AFR_mo ~ gestation_mo + newborn_g + weaning_mo + wean_mass_g + litters_per_year + mass_g, data = d4, na.action = na.exclude)
+
+summary(m2_afr)
 ```
 
 **For each of the two response variables, indicate what is the best model overall based on AICc and how many models have a delta AICc of 4 or less?**
+
 
 **What variables, if any, appear in all of this set of “top” models?**
 

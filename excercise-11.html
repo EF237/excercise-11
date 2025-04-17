@@ -814,6 +814,68 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="step-6">Step 6</h2>
 <section id="run-models-and-a-model-selection-process-to-evaluate-what-now-log-transformed-variables-best-predict-each-of-the-two-response-variables-max.-lifemo-and-afrmo-from-the-set-of-the-following-predictors-gestationmo-newborng-weaningmo-wean-massg-littersyear-and-overall-body-massg." class="level3">
 <h3 class="anchored" data-anchor-id="run-models-and-a-model-selection-process-to-evaluate-what-now-log-transformed-variables-best-predict-each-of-the-two-response-variables-max.-lifemo-and-afrmo-from-the-set-of-the-following-predictors-gestationmo-newborng-weaningmo-wean-massg-littersyear-and-overall-body-massg.">Run models and a model selection process to evaluate what (now log transformed) variables best predict each of the two response variables, max. life(mo) and AFR(mo), from the set of the following predictors: gestation(mo), newborn(g), weaning(mo), wean mass(g), litters/year, and overall body mass(g).</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>m2_life    <span class="ot">&lt;-</span> <span class="fu">lm</span>(max_life_mo <span class="sc">~</span> gestation_mo <span class="sc">+</span> newborn_g <span class="sc">+</span> weaning_mo <span class="sc">+</span> wean_mass_g <span class="sc">+</span> litters_per_year <span class="sc">+</span> mass_g, <span class="at">data =</span> d4, <span class="at">na.action =</span> na.exclude)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2_life)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = max_life_mo ~ gestation_mo + newborn_g + weaning_mo + 
+    wean_mass_g + litters_per_year + mass_g, data = d4, na.action = na.exclude)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.41516 -0.24524 -0.02146  0.30217  1.02653 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       3.861775   0.173884  22.209  &lt; 2e-16 ***
+gestation_mo      0.376680   0.098926   3.808 0.000186 ***
+newborn_g        -0.067921   0.058839  -1.154 0.249715    
+weaning_mo        0.126879   0.054254   2.339 0.020334 *  
+wean_mass_g       0.008042   0.069187   0.116 0.907585    
+litters_per_year -0.227594   0.079839  -2.851 0.004816 ** 
+mass_g            0.128250   0.056485   2.271 0.024230 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.4482 on 202 degrees of freedom
+  (1231 observations deleted due to missingness)
+Multiple R-squared:  0.7713,    Adjusted R-squared:  0.7645 
+F-statistic: 113.6 on 6 and 202 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>m2_afr    <span class="ot">&lt;-</span> <span class="fu">lm</span>(AFR_mo <span class="sc">~</span> gestation_mo <span class="sc">+</span> newborn_g <span class="sc">+</span> weaning_mo <span class="sc">+</span> wean_mass_g <span class="sc">+</span> litters_per_year <span class="sc">+</span> mass_g, <span class="at">data =</span> d4, <span class="at">na.action =</span> na.exclude)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2_afr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = AFR_mo ~ gestation_mo + newborn_g + weaning_mo + 
+    wean_mass_g + litters_per_year + mass_g, data = d4, na.action = na.exclude)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.27610 -0.36282  0.03122  0.37661  1.72945 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       1.77650    0.18352   9.680  &lt; 2e-16 ***
+gestation_mo      0.39649    0.10779   3.678 0.000286 ***
+newborn_g        -0.05543    0.06529  -0.849 0.396731    
+weaning_mo        0.13148    0.05688   2.312 0.021592 *  
+wean_mass_g       0.05424    0.07332   0.740 0.460129    
+litters_per_year -0.71737    0.07869  -9.117  &lt; 2e-16 ***
+mass_g            0.05226    0.06139   0.851 0.395415    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.5219 on 257 degrees of freedom
+  (1176 observations deleted due to missingness)
+Multiple R-squared:  0.8213,    Adjusted R-squared:  0.8171 
+F-statistic: 196.8 on 6 and 257 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
 <p><strong>For each of the two response variables, indicate what is the best model overall based on AICc and how many models have a delta AICc of 4 or less?</strong></p>
 <p><strong>What variables, if any, appear in all of this set of “top” models?</strong></p>
 <p><strong>Calculate and plot the model-averaged coefficients and their CIs across this set of top models.</strong></p>
